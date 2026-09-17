@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ExtraVisualDLC — Мод для Minecraft</title>
+<meta name="description" content="ExtraVisualDLC — 49 модулей: интерфейс, HUD, бой, мир, камера, косметика и социал для Minecraft.">
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="spotlight" id="spotlight"></div>
+<div class="bg-orbs"><span class="orb orb-1"></span><span class="orb orb-2"></span><span class="orb orb-3"></span></div>
+
+<header class="header" id="top">
+  <div class="container header-inner">
+    <a href="#top" class="logo">
+      <span class="logo-mark">E</span>
+      <span class="logo-text">ExtraVisualDLC</span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="#modules">Модули</a>
+      <a href="#install">Установка</a>
+      <a href="#quickstart">Старт</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-ghost" data-open="login" id="loginBtn">Войти</button>
+      <button class="btn btn-ghost user-chip" id="userChip" style="display:none"></button>
+      <a href="https://github.com/extracursed/ExtraVisualDLC/releases/latest/download/ExtraVisualDLC.exe" class="btn btn-primary">Скачать лаунчер</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main>
+<div class="freeze-banner" id="freezeBanner">⛔ Твой аккаунт заморожен. Часть функций недоступна — обратись в поддержку.</div>
+<!-- HERO -->
+<section class="hero container">
+  <div class="hero-badge"><span class="dot"></span>49 модулей · 7 категорий · Обновление 2.4 уже доступно</div>
+  <h1 class="hero-title">Extra<br><span class="grad">VisualDLC</span></h1>
+  <p class="hero-sub">От установки до первой игры — без сложной настройки.<br>Скачали клиент и сразу играете.</p>
+  <div class="hero-buttons">
+    <a href="https://github.com/extracursed/ExtraVisualDLC/releases/latest/download/ExtraVisualDLC.exe" class="btn btn-primary btn-lg">⬇ Скачать лаунчер</a>
+    <a href="#modules" class="btn btn-outline btn-lg">Все модули →</a>
+  </div>
+  <div class="hero-stats">
+    <div><b data-count="49">0</b><span>модулей</span></div>
+    <div><b>1.21.4</b><span>Версия игры</span></div>
+    <div><b data-count="60" data-suffix=" FPS+">0</b><span>без просадок</span></div>
+    <div><b>24/7</b><span>поддержка</span></div>
+  </div>
+
+  <div class="hero-preview reveal">
+    <div class="preview-bar"><i></i><i></i><i></i><span>minecraft · ExtraVisualDLC client 2.4</span></div>
+    <div class="preview-body">
+      <div class="mc-hud">
+        <div class="mc-row">
+          <div class="mc-card watermark">ExtraVisualDLC <em>v2.4</em> <span class="dim">· 120 fps · 32 ms</span></div>
+          <div class="mc-card target"><b>Steve_07</b><span class="hp"><i></i></span><span class="dist-t">3.2m · 18.5 HP</span></div>
+        </div>
+        <div class="mc-row center"><div class="cross">+</div></div>
+        <div class="mc-row">
+          <div class="mc-card keys"><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd><em>LMB · RMB</em></div>
+          <div class="mc-card armor">⛑ ⛓ 👖 🥾<span class="sep">·</span><span class="stars">6 ✦</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span>ClickGUI ✦ TargetHUD ✦ ESP ✦ Плащи ✦ Discord RPC ✦ Fullbright ✦ Zoom ✦ HitParticles ✦ Waypoints ✦ FreeLook ✦ Music Player ✦ MotionBlur ✦&nbsp;</span><span>ClickGUI ✦ TargetHUD ✦ ESP ✦ Плащи ✦ Discord RPC ✦ Fullbright ✦ Zoom ✦ HitParticles ✦ Waypoints ✦ FreeLook ✦ Music Player ✦ MotionBlur ✦&nbsp;</span>
+  </div>
+</div>
+
+<!-- MODULES -->
+<section class="section container reveal" id="modules">
+  <p class="eyebrow">Модули</p>
+  <h2>Все функции мода —<br>в удобных категориях</h2>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-filter="all">Все</button>
+    <button class="tab" data-filter="ui">Интерфейс</button>
+    <button class="tab" data-filter="hud">HUD</button>
+    <button class="tab" data-filter="combat">Бой</button>
+    <button class="tab" data-filter="world">Мир</button>
+    <button class="tab" data-filter="cam">Камера</button>
+    <button class="tab" data-filter="cosmetic">Косметика</button>
+    <button class="tab" data-filter="social">Социал</button>
+  </div>
+
+  <div class="grid-search">
+    <input type="text" class="auth-input" id="modSearch" placeholder="🔍 Найти модуль… например «плащ» или «fps»" autocomplete="off">
+  </div>
+  <div class="grid" id="grid">
+    <!-- ИНТЕРФЕЙС -->
+    <div class="card" data-cat="ui"><h3>ClickGUI</h3><p>Главное меню настроек: Interface / Utilities / Cosmetics / Inventory / Entities / Settings. Свой шрифт, иконки и звуки.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>ArrayList</h3><p>Список включённых модулей прямо на экране.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>Watermark</h3><p>Вотермарка клиента на экране.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>Темы и акцент</h3><p>Смена темы, градиентный акцент, color-picker со слайдером оттенка.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>Конфиги / профили</h3><p>Сохранение и переключение наборов настроек.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>Бинды / макросы</h3><p>Привязка функций на клавиши.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <div class="card" data-cat="ui"><h3>Кастомное главное меню</h3><p>5 фонов, свой логотип, кнопки аккаунта и Discord.</p><span class="tag tag-ui">Интерфейс</span></div>
+    <!-- HUD -->
+    <div class="card" data-cat="hud"><h3>ArmorHUD</h3><p>Броня и прочность над хотбаром.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Effect HUD</h3><p>Активные эффекты зелий на экране.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>CPS + KeyStrokes</h3><p>Клики в секунду и нажатые клавиши.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>TextHUD</h3><p>FPS, пинг, скорость (BPS), спидометр.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>DirectionHUD / Compass</h3><p>Стороны света и направление взгляда.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>GPS / Waypoints</h3><p>Стрелка до метки, система точек.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>TargetHUD</h3><p>Панель цели в бою: ник, ХП, броня, аватар.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Прицел и хотбар</h3><p>Кастомный кроссхейр и хотбар.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Scoreboard / BossBar / Tab</h3><p>Переоформленные скорборд, боссбар и таб-лист.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Чат</h3><p>Свой стиль чата + блюр фона.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Кулдауны</h3><p>Перезарядка жемчуга, зелий и тотема.</p><span class="tag tag-hud">HUD</span></div>
+    <div class="card" data-cat="hud"><h3>Счётчик тотемов</h3><p>Анимация и счёт popping тотемов.</p><span class="tag tag-hud">HUD</span></div>
+    <!-- БОЙ -->
+    <div class="card" data-cat="combat"><h3>HitParticles</h3><p>Частицы при ударе, glow-спрайты.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>HitSounds</h3><p>13 звуков ударов: hit, bell, bonk, bubble, pop, uwu, moan и др.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>HitColor</h3><p>Свой цвет подсветки урона по мобам и игрокам.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>ReachCircle</h3><p>Круг дистанции удара вокруг прицела.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>NoHurtCam</h3><p>Убирает тряску камеры при уроне.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>NoFireOverlay</h3><p>Убирает огонь с экрана при горении.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>ESP</h3><p>Подсветка игроков и хранилищ, 3D-боксы.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>BlockOverlay</h3><p>Стили обводки блоков: nebula, plasma, stars, cobweb.</p><span class="tag tag-combat">Бой</span></div>
+    <div class="card" data-cat="combat"><h3>NameTags</h3><p>Кастомные неймтейги с billboard-свечением.</p><span class="tag tag-combat">Бой</span></div>
+    <!-- МИР -->
+    <div class="card" data-cat="world"><h3>Custom Sky</h3><p>7 наборов неба для разных миров.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>Time / Weather Changer</h3><p>Своё время суток, дождь, снег и туман.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>Частицы</h3><p>Физика частиц и предметов, светлячки, снежинки.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>Fullbright</h3><p>Ночное зрение через гамму.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>Bloom / PostFX</h3><p>Пост-эффекты и свечение интерфейса.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>MotionBlur</h3><p>Размытие в движении: мир + руки.</p><span class="tag tag-world">Мир</span></div>
+    <div class="card" data-cat="world"><h3>Blur</h3><p>Блюр чата, меню и HUD-панелей.</p><span class="tag tag-world">Мир</span></div>
+    <!-- КАМЕРА -->
+    <div class="card" data-cat="cam"><h3>FreeLook</h3><p>Свободный обзор камеры.</p><span class="tag tag-cam">Камера</span></div>
+    <div class="card" data-cat="cam"><h3>Zoom</h3><p>Приближение, кнопка есть даже в меню.</p><span class="tag tag-cam">Камера</span></div>
+    <div class="card" data-cat="cam"><h3>FOV Changer</h3><p>Свой угол обзора.</p><span class="tag tag-cam">Камера</span></div>
+    <div class="card" data-cat="cam"><h3>Анимации рук</h3><p>Взмах, щит и предметы в руках, старая школа.</p><span class="tag tag-cam">Камера</span></div>
+    <div class="card" data-cat="cam"><h3>Траектории</h3><p>Линии полёта стрел и жемчуга.</p><span class="tag tag-cam">Камера</span></div>
+    <div class="card" data-cat="cam"><h3>Ghost-рендер</h3><p>Полупрозрачное отображение сущностей.</p><span class="tag tag-cam">Камера</span></div>
+    <!-- КОСМЕТИКА -->
+    <div class="card" data-cat="cosmetic"><h3>Плащи</h3><p>12 штук с физикой-симуляцией: galaxy, dragon, moon и др.</p><span class="tag tag-cos">Косметика</span></div>
+    <div class="card" data-cat="cosmetic"><h3>Элитра</h3><p>Своя текстура элитри.</p><span class="tag tag-cos">Косметика</span></div>
+    <div class="card" data-cat="cosmetic"><h3>Pochmak-скин</h3><p>Кастомный оверлей скина.</p><span class="tag tag-cos">Косметика</span></div>
+    <!-- СОЦИАЛ -->
+    <div class="card" data-cat="social"><h3>Discord RPC</h3><p>Статус в Discord через встроенный DiscordIPC.</p><span class="tag tag-soc">Социал</span></div>
+    <div class="card" data-cat="social"><h3>Music Player</h3><p>Свой плеер с иконками и громкостью.</p><span class="tag tag-soc">Социал</span></div>
+    <div class="card" data-cat="social"><h3>Friends</h3><p>Список друзей.</p><span class="tag tag-soc">Социал</span></div>
+    <div class="card" data-cat="social"><h3>Alt Manager</h3><p>Смена аккаунтов с главного меню.</p><span class="tag tag-soc">Социал</span></div>
+    <div class="card" data-cat="social"><h3>Death Screen</h3><p>Свой экран смерти со звуками.</p><span class="tag tag-soc">Социал</span></div>
+  </div>
+</section>
+
+<!-- INSTALL -->
+<section class="section container reveal" id="install">
+  <p class="eyebrow">Установка</p>
+  <h2>Проще, чем кажется.<br>Всего два шага.</h2>
+  <div class="steps">
+    <div class="step"><span class="step-num">1</span><h3>Скачайте наш лаунчер</h3><p>Загрузите лаунчер ExtraVisualDLC через личный кабинет.</p><code>ExtraVisualDLC → Скачать лаунчер → Установить</code></div>
+    <div class="step"><span class="step-num">2</span><h3>Запустите лаунчер</h3><p>Запустите лаунчер, настройте его и скачайте майнкрафт с нашими визуалами.</p><code>Лаунчер → Настройка → Играть</code></div>
+  </div>
+</section>
+
+<!-- QUICKSTART -->
+<section class="section container reveal" id="quickstart">
+  <p class="eyebrow">Быстрый старт</p>
+  <h2>От регистрации до первой игры</h2>
+  <div class="start-grid">
+    <div class="start-card"><span class="ico">👤</span><h3>Создайте аккаунт</h3><p>Быстрая регистрация за минуту. Один аккаунт — доступ ко всем продуктам.</p></div>
+    <div class="start-card"><span class="ico">⬇</span><h3>Скачайте клиент</h3><p>Загрузите лаунчер через личный кабинет. Он автоматически подтянет последнюю версию.</p></div>
+    <div class="start-card"><span class="ico">⚔</span><h3>Играйте и побеждайте</h3><p>Выберите сервер и запускайте. Контроль, скорость и точность — с первой секунды.</p></div>
+  </div>
+
+  <div class="cta" id="download">
+    <div>
+      <h3>Готовы прокачать игру?</h3>
+      <p>Лаунчер · Windows 10/11 · Обновления автоматически</p>
+    </div>
+    <div class="cta-btns">
+      <a href="https://github.com/extracursed/ExtraVisualDLC/releases/latest/download/ExtraVisualDLC.exe" class="btn btn-primary btn-lg">Скачать для Windows</a>
+      <a href="#modules" class="btn btn-outline">Смотреть модули</a>
+    </div>
+  </div>
+</section>
+<!-- FAQ -->
+<section class="section container reveal" id="faq">
+  <p class="eyebrow">FAQ</p>
+  <h2>Частые вопросы</h2>
+  <div class="faq">
+    <details class="faq-item" open>
+      <summary>Что за версия игры нужна?</summary>
+      <p>Лаунчер сам скачивает и настраивает <b>Minecraft 1.21.4 на Fabric</b> со всеми визуалами. Отдельно ничего ставить не нужно — только Java 21, а если её нет, лаунчер предложит вариант.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Как установить мод?</summary>
+      <p>Всего два шага: скачай лаунчер с этой страницы и нажми <b>«Играть»</b>. Первый запуск дольше — клиент докачивает игру, Fabric и визуалы (~500 МБ один раз).</p>
+    </details>
+    <details class="faq-item">
+      <summary>За это банят?</summary>
+      <p>Мод меняет только внешний вид игры и интерфейс. На серверах с жёстким античитом любые моды — на твой риск, читай правила сервера.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Забыл пароль от аккаунта?</summary>
+      <p>Нажми <b>«Забыл пароль»</b> в окне входа: сброс по email или кодом через Telegram-бота <b>@ExtraVisualDLCBot</b>.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Как обновляется лаунчер?</summary>
+      <p>Автоматически: при выходе новой версии в лаунчере появится кнопка <b>«Обновить»</b> — один клик и перезапуск.</p>
+    </details>
+    <details class="faq-item">
+      <summary>Есть ли возврат?</summary>
+      <p>Условия оплаты и возврата описаны в <a href="#">оферте</a>. По вопросам пиши в поддержку.</p>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="#top" class="logo">
+        <span class="logo-mark">E</span>
+        <span class="logo-text">ExtraVisualDLC</span>
+      </a>
+      <p class="muted-text">Визуальный мод для Minecraft.<br>49 модулей · Fabric 1.21.4</p>
+    </div>
+    <div class="footer-col">
+      <b>Продукт</b>
+      <a href="#modules">Модули</a>
+      <a href="#install">Установка</a>
+      <a href="#download">Скачать</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <b>Аккаунт</b>
+      <a href="#" data-open="login">Войти</a>
+      <a href="profile.html">Профиль</a>
+      <a href="#" data-switch="forgot">Забыл пароль</a>
+    </div>
+    <div class="footer-col">
+      <b>Помощь</b>
+      <a href="https://t.me/extravisualDLC" target="_blank" rel="noopener">Telegram-канал</a>
+      <a href="https://t.me/ExtraVisualDLCBot" target="_blank" rel="noopener">Бот поддержки</a>
+      <a href="#">Условия оферты</a>
+    </div>
+  </div>
+  <div class="container footer-inner">
+    <span>ExtraVisualDLC — мод для Minecraft • 2026</span>
+    <span class="disclaimer">Не аффилирован с Mojang AB</span>
+  </div>
+</footer>
+
+<!-- AUTH MODALS -->
+<div class="modal-overlay" id="authOverlay">
+  <!-- ВХОД (скрин 1) -->
+  <div class="auth-modal" id="loginModal">
+    <div class="auth-left">
+      <div class="auth-left-bg"></div>
+      <div class="auth-left-content">
+        <p class="auth-left-title">Откройте новые возможности для игры с уникальными функциями</p>
+        <div class="auth-dots"><span></span><span class="active"></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <button class="auth-close" data-close aria-label="Закрыть">✕</button>
+      <h2>Авторизация</h2>
+      <p class="auth-sub">Войди, чтобы попасть в свой профиль</p>
+      <form id="loginForm">
+        <input type="email" class="auth-input" id="loginEmail" placeholder="Введите вашу почту" required>
+        <div class="pass-wrap">
+          <input type="password" class="auth-input" id="loginPass" placeholder="Введите пароль" required>
+          <button type="button" class="eye" data-eye="loginPass" aria-label="Показать пароль">👁</button>
+        </div>
+        <div class="form-msg" id="loginMsg"></div>
+        <button type="submit" class="btn btn-primary auth-btn" id="loginSubmit">Войти</button>
+      </form>
+      <div class="auth-links">
+        <span>Нет аккаунта? <a href="#" data-switch="register">Регистрация</a></span>
+        <a href="#" class="muted" data-switch="forgot">Забыл пароль</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- РЕГИСТРАЦИЯ (скрин 2) -->
+  <div class="auth-modal" id="registerModal" style="display:none">
+    <div class="auth-left">
+      <div class="auth-left-bg reg"></div>
+      <div class="auth-left-content">
+        <p class="auth-left-title">Начните свой путь к идеальной игре прямо сейчас</p>
+        <div class="auth-dots"><span></span><span></span><span></span><span class="active"></span></div>
+      </div>
+    </div>
+    <div class="auth-right">
+      <button class="auth-close" data-close aria-label="Закрыть">✕</button>
+      <h2>Регистрация</h2>
+      <p class="auth-sub">Зарегистрируйтесь, чтобы попасть в новый мир возможностей Minecraft</p>
+      <form id="registerForm">
+        <input type="text" class="auth-input" id="regLogin" placeholder="Введите логин" required minlength="3">
+        <input type="email" class="auth-input" id="regEmail" placeholder="Введите Email" required>
+        <div class="pass-wrap">
+          <input type="password" class="auth-input" id="regPass" placeholder="Введите пароль" required minlength="6">
+          <button type="button" class="eye" data-eye="regPass" aria-label="Показать пароль">👁</button>
+        </div>
+        <div class="pass-wrap">
+          <input type="password" class="auth-input" id="regPass2" placeholder="Повторите пароль" required minlength="6">
+          <button type="button" class="eye" data-eye="regPass2" aria-label="Показать пароль">👁</button>
+        </div>
+        <div class="form-msg" id="regMsg"></div>
+        <button type="submit" class="btn btn-primary auth-btn" id="regSubmit">Зарегистрироваться</button>
+      </form>
+      <div class="auth-links single">
+        <span>Есть аккаунт? <a href="#" data-switch="login">Логин</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ВОССТАНОВЛЕНИЕ ПАРОЛЯ (без капчи) -->
+  <div class="forgot-modal" id="forgotModal" style="display:none">
+    <button class="auth-close" data-close aria-label="Закрыть">✕</button>
+    <h2>Восстановление<br>пароля</h2>
+    <p class="forgot-sub">Введите email, который вы указывали при регистрации, и выберите способ сброса — ссылка на почту или код в Telegram.</p>
+    <form id="forgotForm">
+      <input type="email" class="auth-input" id="forgotEmail" placeholder="Введите Email" required>
+      <div class="form-msg" id="forgotMsg"></div>
+      <button type="submit" class="btn btn-primary auth-btn">Сбросить по Email</button>
+      <button type="button" class="btn btn-outline auth-btn" id="tgShow">Сбросить по Telegram</button>
+    </form>
+    <form id="tgForm" style="display:none">
+      <p class="tg-hint">1. Открой <a href="https://t.me/ExtraVisualDLCBot" target="_blank" rel="noopener">@ExtraVisualDLCBot</a> и отправь ему свой email.<br>2. Введи код из чата и новый пароль ниже.</p>
+      <input type="text" class="auth-input" id="tgCode" placeholder="Код из Telegram (6 цифр)" inputmode="numeric" maxlength="6" required>
+      <input type="password" class="auth-input" id="tgNewPass" placeholder="Новый пароль (мин. 6 символов)" required minlength="6">
+      <div class="form-msg" id="tgMsg"></div>
+      <button type="submit" class="btn btn-primary auth-btn" id="tgSubmit">Сменить пароль</button>
+      <button type="button" class="btn btn-ghost auth-btn" id="tgBack">← Назад</button>
+    </form>
+    <div class="auth-links single center">
+      <span>Вспомнили? <a href="#" data-switch="login">Войти</a></span>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// ===== НАСТРОЙКА SUPABASE — вставь свои ключи =====
+const SUPABASE_URL = "https://vzfjwchkdaafnsoxzddt.supabase.co";       // твой проект
+const SUPABASE_ANON_KEY = "sb_publishable_sqljifUjv-s140nxHWZ5rw_yWJpg_eo";  // publishable key
+const TG_BOT_URL = "https://t.me/ExtraVisualDLCBot";         // бот для сброса пароля
+// =================================================
+const __sbConfigured = SUPABASE_URL.startsWith("http") && SUPABASE_ANON_KEY.length > 20;
+const sb = __sbConfigured ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY) : null;
+if (!__sbConfigured) console.warn("[auth] Supabase не настроен: вставь SUPABASE_URL и SUPABASE_ANON_KEY в index.html");
+// Фильтр модулей: табы + живой поиск
+const tabs = document.querySelectorAll('.tab');
+const cards = document.querySelectorAll('#grid .card');
+const modSearch = document.getElementById('modSearch');
+window.__mf = 'all';
+function applyFilter(){
+  const f = window.__mf;
+  const q = (modSearch && modSearch.value || '').trim().toLowerCase();
+  let n = 0;
+  cards.forEach(c => {
+    const byTab = f === 'all' || c.dataset.cat === f;
+    const byText = !q || c.textContent.toLowerCase().includes(q);
+    const show = byTab && byText;
+    c.style.display = show ? '' : 'none';
+    if (show) { n++; c.classList.remove('pop'); void c.offsetWidth; c.classList.add('pop'); }
+  });
+  let empty = document.getElementById('gridEmpty');
+  if (!n && !empty) {
+    empty = document.createElement('p');
+    empty.id = 'gridEmpty'; empty.className = 'muted-text';
+    empty.textContent = 'Ничего не найдено — попробуй другой запрос.';
+    document.getElementById('grid').after(empty);
+  } else if (empty) empty.style.display = n ? 'none' : '';
+}
+tabs.forEach(btn => {
+  btn.addEventListener('click', () => {
+    tabs.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    window.__mf = btn.dataset.filter;
+    applyFilter();
+  });
+});
+if (modSearch) modSearch.addEventListener('input', applyFilter);
+
+// Мобильное меню
+const burger = document.getElementById('burger');
+const nav = document.getElementById('nav');
+burger.addEventListener('click', () => {
+  nav.classList.toggle('open');
+  burger.classList.toggle('open');
+});
+nav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => nav.classList.remove('open')));
+
+// Модалки входа / регистрации / восстановления
+const overlay = document.getElementById('authOverlay');
+const loginModal = document.getElementById('loginModal');
+const registerModal = document.getElementById('registerModal');
+const forgotModal = document.getElementById('forgotModal');
+function openAuth(mode){
+  overlay.classList.add('show');
+  document.body.style.overflow = 'hidden';
+  loginModal.style.display = mode === 'login' ? 'flex' : 'none';
+  registerModal.style.display = mode === 'register' ? 'flex' : 'none';
+  forgotModal.style.display = mode === 'forgot' ? 'block' : 'none';
+  if (mode === 'forgot') { // всегда начинаем с выбора способа
+    document.getElementById('forgotForm').style.display = '';
+    document.getElementById('tgForm').style.display = 'none';
+  }
+}
+function closeAuth(){ overlay.classList.remove('show'); document.body.style.overflow = ''; }
+document.querySelectorAll('[data-open]').forEach(b => b.addEventListener('click', e => { e.preventDefault(); openAuth(b.dataset.open); }));
+document.querySelectorAll('[data-switch]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); openAuth(a.dataset.switch); }));
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', closeAuth));
+overlay.addEventListener('click', e => { if (e.target === overlay) closeAuth(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAuth(); });
+// Глазок пароля
+document.querySelectorAll('[data-eye]').forEach(btn => btn.addEventListener('click', () => {
+  const inp = document.getElementById(btn.dataset.eye);
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+}));
+function setMsg(el, text, ok){
+  el.textContent = text || "";
+  el.className = "form-msg" + (text ? (ok ? " ok" : " err") : "");
+}
+function setLoading(btn, on, label){
+  btn.disabled = !!on;
+  btn.dataset.label = btn.dataset.label || btn.textContent;
+  btn.textContent = on ? "Загрузка…" : (label || btn.dataset.label);
+}
+// Шапка: Войти ↔ профиль/выход
+const loginBtn = document.getElementById('loginBtn');
+const userChip = document.getElementById('userChip');
+function renderUser(user){
+  const name = user ? (user.user_metadata?.username || user.email) : null;
+  loginBtn.style.display = user ? "none" : "";
+  userChip.style.display = user ? "" : "none";
+  if (user) userChip.textContent = "👤 " + name;
+}
+userChip.addEventListener('click', () => { location.href = 'profile.html'; });
+async function refreshSession(){
+  if (!sb) return;
+  const { data } = await sb.auth.getSession();
+  const user = data.session?.user || null;
+  renderUser(user);
+  // Баннер заморозки
+  try {
+    document.getElementById('freezeBanner').style.display =
+      (user && (await sb.from('profiles').select('frozen').eq('user_id', user.id).single()).data?.frozen) ? '' : 'none';
+  } catch (_) {}
+}
+if (sb) {
+  refreshSession();
+  sb.auth.onAuthStateChange((_e, session) => renderUser(session?.user || null));
+}
+// Вход
+document.getElementById('loginForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('loginMsg');
+  const btn = document.getElementById('loginSubmit');
+  if (!sb) return setMsg(msg, "Авторизация не настроена: добавь ключи Supabase в index.html");
+  setMsg(msg, ""); setLoading(btn, true);
+  const { error } = await sb.auth.signInWithPassword({
+    email: document.getElementById('loginEmail').value.trim(),
+    password: document.getElementById('loginPass').value
+  });
+  setLoading(btn, false);
+  if (error) {
+    const m = (error.message || "").toLowerCase();
+    if (m.includes("banned") || m.includes("ban ")) return setMsg(msg, "Аккаунт заблокирован ⛔ Обратись в поддержку");
+    return setMsg(msg, "Не удалось войти: " + error.message);
+  }
+  closeAuth();
+});
+// Восстановление по Email
+document.getElementById('forgotForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('forgotMsg');
+  const btn = e.target.querySelector('[type="submit"]');
+  if (!sb) return setMsg(msg, "Сброс не настроен: добавь ключи Supabase в index.html");
+  setMsg(msg, ""); setLoading(btn, true);
+  const { error } = await sb.auth.resetPasswordForEmail(
+    document.getElementById('forgotEmail').value.trim(),
+    { redirectTo: location.origin }
+  );
+  setLoading(btn, false);
+  if (error) return setMsg(msg, "Ошибка: " + error.message);
+  setMsg(msg, "Ссылка для сброса отправлена на почту ✉", true);
+});
+// Telegram-сброс: показать/скрыть форму с кодом
+const forgotFormEl = document.getElementById('forgotForm');
+const tgFormEl = document.getElementById('tgForm');
+document.getElementById('tgShow').addEventListener('click', () => {
+  forgotFormEl.style.display = 'none';
+  tgFormEl.style.display = '';
+});
+document.getElementById('tgBack').addEventListener('click', () => {
+  tgFormEl.style.display = 'none';
+  forgotFormEl.style.display = '';
+});
+// Отправка кода + нового пароля на /api/telegram-reset
+tgFormEl.addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('tgMsg');
+  const btn = document.getElementById('tgSubmit');
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) return setMsg(msg, "Сначала введи email в поле выше");
+  setMsg(msg, ""); setLoading(btn, true);
+  try {
+    const r = await fetch('/api/telegram-reset', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        code: document.getElementById('tgCode').value.trim(),
+        newPassword: document.getElementById('tgNewPass').value
+      })
+    });
+    const j = await r.json().catch(() => ({}));
+    setLoading(btn, false);
+    if (!r.ok) return setMsg(msg, j.error || "Не удалось сменить пароль");
+    setMsg(msg, "Пароль изменён! Войди с новым паролем ✅", true);
+    setTimeout(() => { openAuth('login'); }, 1500);
+  } catch (err) {
+    setLoading(btn, false);
+    setMsg(msg, "Нет связи с сервером, попробуй позже");
+  }
+});
+document.getElementById('registerForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const msg = document.getElementById('regMsg');
+  const btn = document.getElementById('regSubmit');
+  if (!sb) return setMsg(msg, "Регистрация не настроена: добавь ключи Supabase в index.html");
+  const p1 = document.getElementById('regPass').value;
+  const p2 = document.getElementById('regPass2').value;
+  if (p1 !== p2) { document.getElementById('regPass2').focus(); document.getElementById('regPass2').style.borderColor = '#f43f5e'; return setMsg(msg, "Пароли не совпадают"); }
+  setMsg(msg, ""); setLoading(btn, true);
+  const { error } = await sb.auth.signUp({
+    email: document.getElementById('regEmail').value.trim(),
+    password: p1,
+    options: { data: { username: document.getElementById('regLogin').value.trim() }, emailRedirectTo: location.origin }
+  });
+  setLoading(btn, false);
+  if (error) return setMsg(msg, "Не удалось зарегистрироваться: " + error.message);
+  setMsg(msg, "Готово! Проверь почту для подтверждения ✉", true);
+});
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id.length > 1 && id !== '#login') {
+      const el = document.querySelector(id);
+      if (el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    }
+  });
+});
+// Прямая ссылка на вход: index.html#login
+if (location.hash === '#login') openAuth('login');
+// Плавное появление блоков при скролле
+try {
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+  }), { threshold: .12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+} catch (_) { document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible')); }
+// Анимация чисел в hero-stats
+try {
+  const nums = document.querySelectorAll('[data-count]');
+  const cio = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return;
+    const el = e.target; cio.unobserve(el);
+    const target = +el.dataset.count, suf = el.dataset.suffix || '';
+    const t0 = performance.now(), dur = 1300;
+    (function tick(t){
+      const p = Math.min(1, (t - t0) / dur), ease = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(target * ease) + suf;
+      if (p < 1) requestAnimationFrame(tick);
+    })(t0);
+  }), { threshold: .5 });
+  nums.forEach(el => cio.observe(el));
+} catch (_) {}
+// Пятно света за курсором (только десктоп)
+try {
+  if (matchMedia('(pointer:fine)').matches) {
+    const sp = document.getElementById('spotlight');
+    let x = innerWidth / 2, y = 200, tx = x, ty = y;
+    addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    (function loop(){
+      x += (tx - x) * .08; y += (ty - y) * .08;
+      if (sp) sp.style.transform = `translate(${x - 260}px,${y - 260}px)`;
+      requestAnimationFrame(loop);
+    })();
+  }
+} catch (_) {}
+</script>
+</body>
+</html>

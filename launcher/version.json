@@ -1,0 +1,8 @@
+{
+  "version": "1.5.7",
+  "url": "https://github.com/extracursed/ExtraVisualDLC/releases/download/v1.5.7/ExtraVisualDLC.exe",
+  "notes": "Exact classpath fix (DFU conflict)",
+  "mod_url": "https://github.com/extracursed/ExtraVisualDLC-1.2.1-fixed.jar/releases/download/v1.5.1/ExtraVisualDLC-1.2.1-fixed.jar",
+  "mc_version": "1.21.4",
+  "fabric_loader": "0.19.5"
+}

@@ -1,0 +1,7 @@
+# Build outputs (тяжёлые exe идут через GitHub Releases, не через git)
+ExtraVisualDLC/bin/
+ExtraVisualDLC/obj/
+ExtraVisualDLC/publish/
+ExtraVisualDLC/publish-single/
+*.user
+.vs/

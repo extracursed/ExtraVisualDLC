@@ -1,0 +1,9 @@
+{
+  "name": "extravisualdlc-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "ExtraVisualDLC — сайт + Telegram-сброс пароля (Vercel Functions)",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.47.0"
+  }
+}

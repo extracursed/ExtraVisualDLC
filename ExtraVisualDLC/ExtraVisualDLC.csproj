@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <AssemblyName>ExtraVisualDLC</AssemblyName>
+    <Product>ExtraVisualDLC</Product>
+    <Title>ExtraVisualDLC - Minecraft Launcher</Title>
+    <Description>ExtraVisualDLC - лаунчер Minecraft клиента</Description>
+    <Version>1.5.7</Version>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
+    <EmbeddedResource Include="logo.png" />
+  </ItemGroup>
+
+</Project>

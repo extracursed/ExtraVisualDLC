@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Профиль — ExtraVisualDLC</title>
+<link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Unbounded:wght@500;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="bg-orbs"><span class="orb orb-1"></span><span class="orb orb-2"></span></div>
+
+<header class="header">
+  <div class="container header-inner">
+    <a href="index.html" class="logo">
+      <span class="logo-mark">E</span>
+      <span class="logo-text">ExtraVisualDLC</span>
+    </a>
+    <nav class="nav" id="nav">
+      <a href="index.html#modules">Модули</a>
+      <a href="index.html#install">Установка</a>
+      <a href="index.html#download">Скачать</a>
+    </nav>
+    <div class="header-actions">
+      <button class="btn btn-ghost" id="logoutBtn">Выйти</button>
+    </div>
+    <button class="burger" id="burger" aria-label="Меню"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main class="container profile-wrap">
+  <div id="profileBox" style="display:none">
+    <h1 class="profile-hello">Привет, <span class="profile-name" id="pName">…</span><button class="nick-edit" id="nickEdit" title="Сменить ник" aria-label="Сменить ник">✎</button></h1>
+
+    <h2 class="profile-title">Информация о профиле</h2>
+    <div id="statusBanner" class="freeze-banner" style="margin:0 0 14px"></div>
+    <div class="panel-links" id="panelLinks" style="display:none;margin:0 0 14px"></div>
+    <div class="profile-actions" id="profileActions" style="display:none">
+      <a href="https://github.com/extracursed/ExtraVisualDLC/releases/latest/download/ExtraVisualDLC.exe" class="btn btn-primary">⬇ Скачать лаунчер</a>
+      <button class="btn btn-outline" id="copyUid">⧉ Копировать UID</button>
+    </div>
+    <div class="profile-card">
+      <div class="p-row"><span>Дата регистрации</span><b id="pDate">…</b></div>
+      <div class="p-row"><span>ID</span><b id="pId">…</b></div>
+      <div class="p-row"><span>Ваша роль</span><b class="role">👤 <span id="pRole">Пользователь</span></b></div>
+      <div class="p-row"><span>Email</span><b id="pEmail">…</b></div>
+      <div class="p-row"><span>Пароль</span><b>********** <button class="p-edit" id="passEdit" aria-label="Сменить пароль">✎</button></b></div>
+      <div class="p-row"><span>HWID</span><b><span id="pHwid">Не привязан</span> <button class="p-edit" id="hwidReset" aria-label="Отвязать ПК" title="Отвязать ПК" style="display:none">✕</button></b></div>
+      <div class="p-row"><span>Telegram</span><b id="pTg">…</b></div>
+      <div class="form-msg" id="profMsg"></div>
+    </div>
+
+    <form id="passForm" class="pass-form" style="display:none">
+      <input type="password" class="auth-input" id="newPass" placeholder="Новый пароль (мин. 6 символов)" required minlength="6">
+      <div class="form-msg" id="passMsg"></div>
+      <button type="submit" class="btn btn-primary" id="passSubmit">Сохранить пароль</button>
+    </form>
+  </div>
+
+  <div id="noAuth" class="profile-card center" style="display:none">
+    <h2>Ты не вошёл в аккаунт</h2>
+    <p class="muted-text">Войди, чтобы увидеть свой профиль.</p>
+    <a href="index.html#login" class="btn btn-primary btn-lg">Войти</a>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL = "https://vzfjwchkdaafnsoxzddt.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_sqljifUjv-s140nxHWZ5rw_yWJpg_eo";
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+// Бургер
+const burger = document.getElementById('burger');
+const nav = document.getElementById('nav');
+burger.addEventListener('click', () => nav.classList.toggle('open'));
+
+function setMsg(el, text, ok){
+  el.textContent = text || "";
+  el.className = "form-msg" + (text ? (ok ? " ok" : " err") : "");
+}
+
+async function load(){
+  const { data } = await sb.auth.getSession();
+  const user = data.session?.user;
+  if (!user) {
+    document.getElementById('noAuth').style.display = '';
+    document.getElementById('logoutBtn').style.display = 'none';
+    return;
+  }
+  document.getElementById('profileBox').style.display = '';
+
+  let profile = null;
+  try {
+    const r = await sb.from('profiles').select('id, username, role, hwid, frozen, telegram_chat_id').eq('user_id', user.id).single();
+    profile = r.data || null;
+  } catch (_) {}
+
+  const name = (profile && profile.username) || user.user_metadata?.username || user.email;
+  document.getElementById('pName').textContent = name;
+  document.getElementById('pDate').textContent = new Date(user.created_at).toLocaleDateString('ru-RU');
+  document.getElementById('pId').textContent = profile ? profile.id : '—';
+  const role = (profile && profile.role) || 'Пользователь';
+  document.getElementById('pRole').textContent = role;
+  const roleColors = { 'Админ': '#f87171', 'Модератор': '#fbbf24', 'Пользователь': '#8b5cf6', 'Разработчик': '#22d3ee', 'Кирюха': '#f472b6' };
+  document.querySelector('.p-row .role').style.color = roleColors[role] || '#8b5cf6';
+
+  // Статус заморозки + ссылки на панели по правам
+  if (profile && profile.frozen) {
+    const sb2 = document.getElementById('statusBanner');
+    sb2.style.display = '';
+    sb2.textContent = '⛔ Твой аккаунт заморожен. Часть функций недоступна — обратись в поддержку.';
+  }
+  const links = document.getElementById('panelLinks');
+  let html = '';
+  if (['Админ', 'Разработчик', 'Кирюха'].includes(role)) html += '<a href="admin.html" class="btn btn-primary">Админ-панель</a>';
+  if (['Модератор', 'Админ', 'Разработчик', 'Кирюха'].includes(role)) html += '<a href="moder.html" class="btn btn-outline">Модер-панель</a>';
+  if (html) { links.innerHTML = html; links.style.display = ''; }
+  document.getElementById('pEmail').textContent = user.email;
+  document.getElementById('profileActions').style.display = '';
+  const profMsg = document.getElementById('profMsg');
+
+  // Ник в игре: смена отображаемого ника
+  document.getElementById('nickEdit').addEventListener('click', async () => {
+    const cur = document.getElementById('pName').textContent;
+    const v = prompt('Новый ник (3–16 символов: латиница, цифры, _):', cur);
+    if (v == null) return;
+    const nick = v.trim();
+    if (!/^[A-Za-z0-9_]{3,16}$/.test(nick)) { setMsg(profMsg, "Ник: 3–16 символов, латиница/цифры/_"); return; }
+    setMsg(profMsg, "");
+    const { error } = await sb.from('profiles').update({ username: nick }).eq('user_id', user.id);
+    if (error) return setMsg(profMsg, "Ошибка: " + error.message);
+    document.getElementById('pName').textContent = nick;
+    setMsg(profMsg, "Ник изменён ✅", true);
+  });
+
+  // HWID: отвязка ПК
+  const hwidVal = (profile && profile.hwid) || '';
+  document.getElementById('pHwid').textContent = hwidVal || 'Не привязан';
+  if (hwidVal) {
+    const hb = document.getElementById('hwidReset');
+    hb.style.display = '';
+    hb.addEventListener('click', async () => {
+      if (!confirm('Отвязать ПК? При следующем запуске лаунчер привяжет текущий.')) return;
+      const { error } = await sb.from('profiles').update({ hwid: null }).eq('user_id', user.id);
+      if (error) return setMsg(profMsg, "Ошибка: " + error.message);
+      document.getElementById('pHwid').textContent = 'Не привязан';
+      hb.style.display = 'none';
+      setMsg(profMsg, "ПК отвязан ✅", true);
+    });
+  }
+
+  // Копировать UID
+  document.getElementById('copyUid').addEventListener('click', async () => {
+    const t = profile ? String(profile.id) : '';
+    try { await navigator.clipboard.writeText(t); setMsg(profMsg, "UID скопирован ✅", true); }
+    catch (_) { prompt('Твой UID:', t); }
+  });
+
+  const tg = document.getElementById('pTg');
+  if (profile && profile.telegram_chat_id) {
+    tg.innerHTML = '<span class="ok-text">Привязан ✔</span> <button class="p-edit" id="tgUnlink" title="Отвязать" aria-label="Отвязать">✕</button>';
+    document.getElementById('tgUnlink').addEventListener('click', async () => {
+      if (!confirm('Отвязать Telegram?')) return;
+      const { error } = await sb.from('profiles').update({ telegram_chat_id: null }).eq('user_id', user.id);
+      if (error) return setMsg(profMsg, "Ошибка: " + error.message);
+      location.reload();
+    });
+  } else {
+    const link = `https://t.me/ExtraVisualDLCBot?start=link_${user.id}`;
+    tg.innerHTML = `<span class="muted-text">Не привязан</span> · <a href="${link}" target="_blank" rel="noopener">привязать в 1 клик</a>`;
+  }
+
+  // Смена пароля
+  const passForm = document.getElementById('passForm');
+  document.getElementById('passEdit').addEventListener('click', () => {
+    passForm.style.display = passForm.style.display === 'none' ? '' : 'none';
+  });
+  passForm.addEventListener('submit', async e => {
+    e.preventDefault();
+    const msg = document.getElementById('passMsg');
+    const btn = document.getElementById('passSubmit');
+    setMsg(msg, ""); btn.disabled = true; btn.textContent = "Сохранение…";
+    const { error } = await sb.auth.updateUser({ password: document.getElementById('newPass').value });
+    btn.disabled = false; btn.textContent = "Сохранить пароль";
+    if (error) return setMsg(msg, "Ошибка: " + error.message);
+    setMsg(msg, "Пароль изменён ✅", true);
+    document.getElementById('newPass').value = "";
+  });
+
+  document.getElementById('logoutBtn').addEventListener('click', async () => {
+    await sb.auth.signOut();
+    location.href = "index.html";
+  });
+}
+load();
+</script>
+</body>
+</html>
