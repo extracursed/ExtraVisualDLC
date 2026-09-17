@@ -8,7 +8,7 @@
     <Product>ExtraVisualDLC</Product>
     <Title>ExtraVisualDLC - Minecraft Launcher</Title>
     <Description>ExtraVisualDLC - лаунчер Minecraft клиента</Description>
-    <Version>1.5.7</Version>
+    <Version>1.5.8</Version>
     <ApplicationIcon>icon.ico</ApplicationIcon>
     <Nullable>disable</Nullable>
     <ImplicitUsings>disable</ImplicitUsings>

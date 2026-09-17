@@ -265,9 +265,12 @@ namespace ExtraVisualDLC
         {
             string mods = Path.Combine(gameDir, "mods");
             Directory.CreateDirectory(mods);
-            // Если целый визуал уже лежит — НЕ трогаем (игра могла быть запущена,
-            // jar занят JVM; удаление/перекачивание на каждый запуск роняет ModDiscoverer
-            // с "файл занят другим процессом"). Чистим только прочий мусор.
+            // Ожидаемое имя файла — из mod_url (1.2.2): старую версию удаляем,
+            // новую качаем. Целый ожидаемый файл не трогаем (может держать JVM).
+            string expected = "ExtraVisualDLC-mod.jar";
+            if (!string.IsNullOrWhiteSpace(ModUrl))
+                try { expected = Path.GetFileName(new Uri(ModUrl).LocalPath); } catch { }
+            if (string.IsNullOrWhiteSpace(expected)) expected = "ExtraVisualDLC-mod.jar";
             FileInfo keep = null;
             try
             {
@@ -282,6 +285,9 @@ namespace ExtraVisualDLC
                     .FirstOrDefault();
             }
             catch { }
+            // keep валиден только если это ожидаемый файл
+            if (keep != null && !string.Equals(keep.Name, expected, StringComparison.OrdinalIgnoreCase))
+                keep = null;
             foreach (var f in Directory.GetFiles(mods, "*.jar"))
             {
                 string n = Path.GetFileName(f).ToLowerInvariant();
@@ -293,18 +299,15 @@ namespace ExtraVisualDLC
             { log?.Invoke("[setup] визуал уже на месте: " + keep.Name); return; }
             if (string.IsNullOrWhiteSpace(ModUrl))
             { log?.Invoke("[setup] mod_url не задан — визуал пропущен (задай в launcher/version.json)"); return; }
-            string fileName = "ExtraVisualDLC-mod.jar";
-            try { fileName = Path.GetFileName(new Uri(ModUrl).LocalPath); } catch { }
-            if (string.IsNullOrWhiteSpace(fileName)) fileName = "ExtraVisualDLC-mod.jar";
-            string dest = Path.Combine(mods, fileName);
+            string dest = Path.Combine(mods, expected);
             if (File.Exists(dest) && new FileInfo(dest).Length > 50_000_000)
-            { log?.Invoke("[setup] визуал уже на месте: " + fileName); return; }
+            { log?.Invoke("[setup] визуал уже на месте: " + expected); return; }
             if (File.Exists(dest))
             { try { File.Delete(dest); log?.Invoke("[setup] битый визуал удалён, качаю заново..."); } catch { } }
             log?.Invoke("[setup] качаю визуал (~100+ МБ)...");
             progress?.Invoke(72, "Скачивание визуалов...");
             await DownloadFileAsync(ModUrl, dest);
-            log?.Invoke("[setup] визуал установлен: " + fileName);
+            log?.Invoke("[setup] визуал установлен: " + expected);
         }
 
         public static void SetModUrlFromVersionJson(string versionJsonPath)
